@@ -328,6 +328,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9886adbe4f1c4d1479e61f8932b2f8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 505348248776416837}
+  anim: {fileID: 505348248776416838}
+  sr: {fileID: 505348248776416836}
+  pv: {fileID: 7399672558225049772}
+  NickNameText: {fileID: 505348249179849975}
+  HealthImage: {fileID: 505348249414493734}
 --- !u!1 &505348248847334466
 GameObject:
   m_ObjectHideFlags: 0
