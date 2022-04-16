@@ -21,7 +21,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     {
         //´Ð³×ÀÓ
         NickNameText.text = pv.IsMine ? PhotonNetwork.NickName : pv.Owner.NickName;
-        NickNameText.color = pv.IsMine ? Color.red : Color.green;
+        NickNameText.color = pv.IsMine ? Color.green : Color.red;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
