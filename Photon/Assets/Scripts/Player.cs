@@ -35,9 +35,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (pv.IsMine)
+        {
+            // <- -> ¿Ãµø
+            float axis = Input.GetAxisRaw("Horizontal");
+            rigid.velocity = new Vector2(4 * axis , rigid.velocity.y);
+        }
     }
 }
