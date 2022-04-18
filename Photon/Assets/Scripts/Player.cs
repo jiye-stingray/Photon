@@ -27,7 +27,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (pv.IsMine)
         {
-            // <- -> 이동
+            // 이동
             float axis = Input.GetAxisRaw("Horizontal");
             rigid.velocity = new Vector2(4 * axis, rigid.velocity.y);
 
@@ -37,11 +37,26 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);    //재접속시 filpx를 동기화 시켜주기 위해서 AllBuffed
             }
             else anim.SetBool("walk", false);
+
+            //점프, 바닥체크
+            isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.5f), 0.07f, 1 << LayerMask.NameToLayer("Ground"));
+            anim.SetBool("jump", !isGround);
+            if (Input.GetKeyDown(KeyCode.UpArrow)&& isGround)
+            {
+                pv.RPC("JumpRPC", RpcTarget.All);
+            }
         }
     }
 
     [PunRPC]
     void FlipXRPC(float axis) => sr.flipX = axis == -1;
+
+    [PunRPC]
+    void JumpRPC()
+    {
+        rigid.velocity = Vector2.zero;
+        rigid.AddForce(Vector2.up * 700);
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
