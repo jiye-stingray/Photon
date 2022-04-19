@@ -45,6 +45,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 pv.RPC("JumpRPC", RpcTarget.All);
             }
+
+            //ÃÑ¾Ë¹ß»ç
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                PhotonNetwork.Instantiate("Bullet", transform.position + new Vector3(sr.flipX ? -0.4f : 0.4f, -0.11f, 0), Quaternion.identity);
+                anim.SetTrigger("shot");
+            }
         }
     }
 

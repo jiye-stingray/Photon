@@ -5,22 +5,16 @@ using Photon.Pun;
 using Photon.Realtime;
 
 
-public class Bullet : MonoBehaviourPunCallbacks , IPunObservable
+public class Bullet : MonoBehaviourPunCallbacks
 {
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
+    public PhotonView pv;
+    int dir;
 
-    }
+    void Start() => Destroy(gameObject, 3.5f);
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Update() => transform.Translate(Vector3.right * 7 * Time.deltaTime * dir);\
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [PunRPC]
+    void DirRPC(int dir) => this.dir = dir;
+
 }
