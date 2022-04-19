@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviourPunCallbacks
 
     void Start() => Destroy(gameObject, 3.5f);
 
-    void Update() => transform.Translate(Vector3.right * 7 * Time.deltaTime * dir);\
+    void Update() => transform.Translate(Vector3.right * 7 * Time.deltaTime * dir);
 
     [PunRPC]
     void DirRPC(int dir) => this.dir = dir;
