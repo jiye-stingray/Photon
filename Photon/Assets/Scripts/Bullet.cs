@@ -14,7 +14,14 @@ public class Bullet : MonoBehaviourPunCallbacks
 
     void Update() => transform.Translate(Vector3.right * 7 * Time.deltaTime * dir);
 
+    void OnTriggerEnter2D(Collider2D col) //col을 RPC의 매개변수로 넣어줄 수 있다
+    {
+        if (col.gameObject.CompareTag("Ground")) pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
+    }
+
     [PunRPC]
     void DirRPC(int dir) => this.dir = dir;
 
+    [PunRPC]
+    void DestroyRPC() => Destroy(gameObject);
 }

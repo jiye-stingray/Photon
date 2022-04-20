@@ -42,6 +42,7 @@ MonoBehaviour:
   - FlipXRPC
   - JumpRPC
   - DirRPC
+  - DestroyRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
