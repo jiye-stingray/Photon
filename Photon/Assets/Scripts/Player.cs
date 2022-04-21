@@ -66,6 +66,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         rigid.AddForce(Vector2.up * 700);
     }
 
+    public void Hit()
+    {
+        HealthImage.fillAmount -= 0.1f;
+        if (HealthImage.fillAmount <= 0 )
+        {
+            GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
+            pv.RPC("DestroyRPC", RpcTarget.AllBuffered);    //AllBuffered로 해야 제대로 사라져 복제 버그가 안 생긴다
+        }
+    }
+
+    [PunRPC]
+    void DestroyRPC() => Destroy(gameObject);
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         
