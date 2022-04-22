@@ -41,7 +41,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             //점프, 바닥체크
             isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.5f), 0.07f, 1 << LayerMask.NameToLayer("Ground"));
             anim.SetBool("jump", !isGround);
-            if (Input.GetKeyDown(KeyCode.UpArrow)&& isGround)
+            if (Input.GetKeyDown(KeyCode.UpArrow) && isGround)
             {
                 pv.RPC("JumpRPC", RpcTarget.All);
             }
@@ -54,6 +54,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 anim.SetTrigger("shot");
             }
         }
+
+        //IsMine이 아닌 것들은 부드럽게 위치 동기화
+        else if ((transform.position - curPos).sqrMagnitude >= 100) transform.position = curPos;
+        else transform.position = Vector3.Lerp(transform.position, curPos, Time.deltaTime * 10);
+
     }
 
     [PunRPC]
@@ -81,14 +86,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(HealthImage.fillAmount);
+        }
+        else
+        {
+            curPos = (Vector3)stream.ReceiveNext();
+            HealthImage.fillAmount = (float)stream.ReceiveNext();
+        }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
 
 }
