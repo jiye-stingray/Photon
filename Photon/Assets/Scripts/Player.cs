@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Cinemachine;
+
 
 public class Player : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -14,6 +16,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public Text NickNameText;
     public Image HealthImage;
 
+    bool isWalk;
     bool isGround;
     Vector3 curPos;
 
@@ -22,7 +25,16 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         //닉네임
         NickNameText.text = pv.IsMine ? PhotonNetwork.NickName : pv.Owner.NickName;
         NickNameText.color = pv.IsMine ? Color.green : Color.red;
+
+        if (pv.IsMine)
+        {
+            //2D 카메라
+            var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
+            CM.Follow = transform;
+            CM.LookAt = transform;
+        }
     }
+
     void Update()
     {
         if (pv.IsMine)
@@ -33,10 +45,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             if (axis != 0)
             {
-                anim.SetBool("walk", true);
+                isWalk = true;
                 pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);    //재접속시 filpx를 동기화 시켜주기 위해서 AllBuffed
             }
-            else anim.SetBool("walk", false);
+            else isWalk = false;
+
+            anim.SetBool("walk", isWalk);
+
 
             //점프, 바닥체크
             isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.5f), 0.07f, 1 << LayerMask.NameToLayer("Ground"));
@@ -67,6 +82,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     void JumpRPC()
     {
+        isWalk = false;
         rigid.velocity = Vector2.zero;
         rigid.AddForce(Vector2.up * 700);
     }
