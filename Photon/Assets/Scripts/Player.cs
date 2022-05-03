@@ -114,6 +114,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("DeadLine"))
+        {
+            GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
+            pv.RPC("DestroyRPC",RpcTarget.AllBuffered);
+        }
+    }
 
 }
