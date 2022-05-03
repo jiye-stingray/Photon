@@ -35,8 +35,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Spawn();
     }
 
-
-
     IEnumerator DestroyBullet()
     {
         yield return new WaitForSeconds(0.2f);
