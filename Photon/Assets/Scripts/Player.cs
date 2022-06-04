@@ -54,13 +54,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
             //점프, 바닥체크
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.5f, 1 << LayerMask.NameToLayer("Ground"));
-            isGround = hit.collider == null;
-            Debug.DrawRay(transform.position, Vector2.down,Color.red, 0.5f);
+            isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.5f), 0.5f, 1 << LayerMask.NameToLayer("Ground"));
 
-            //isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.5f), 1f, 1 << LayerMask.NameToLayer("Ground"));
-
-            Debug.Log(isGround);
             anim.SetBool("jump", !isGround);
             if (Input.GetKeyDown(KeyCode.UpArrow) && isGround)
             {
