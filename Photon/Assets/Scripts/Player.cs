@@ -77,9 +77,16 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     }
 
+    /// <summary>
+    /// 플레이어의 이동 방향에 따라 스프라이트를 뒤집는다
+    /// </summary>
+    /// <param name="axis">이동 방향</param>
     [PunRPC]
     void FlipXRPC(float axis) => sr.flipX = axis == -1;
 
+    /// <summary>
+    /// 점프
+    /// </summary>
     [PunRPC]
     void JumpRPC()
     {
@@ -88,6 +95,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         rigid.AddForce(Vector2.up * 700);
     }
 
+    /// <summary>
+    /// 총알과 충돌 했을 때
+    /// </summary>
     public void Hit()
     {
         HealthImage.fillAmount -= 0.1f;
@@ -98,9 +108,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    /// <summary>
+    /// 플레이어를 삭제 시킬때
+    /// </summary>
     [PunRPC]
     void DestroyRPC() => Destroy(gameObject);
 
+    /// <summary>
+    /// 플레이어의 위치와 채력상태를 동기화
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <param name="info"></param>
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -117,7 +135,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("DeadLine"))
+        if (collider.gameObject.CompareTag("DeadLine")) //맵 밖으로 나갔을 때
         {
             GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
             pv.RPC("DestroyRPC",RpcTarget.AllBuffered);
