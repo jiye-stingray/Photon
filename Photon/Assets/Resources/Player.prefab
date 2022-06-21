@@ -335,6 +335,7 @@ MonoBehaviour:
   pv: {fileID: 7399672558225049772}
   NickNameText: {fileID: 505348249179849975}
   HealthImage: {fileID: 505348249414493734}
+  audio: {fileID: 0}
 --- !u!82 &-6351086983919933469
 AudioSource:
   m_ObjectHideFlags: 0
