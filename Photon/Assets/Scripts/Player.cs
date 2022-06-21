@@ -16,12 +16,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public Text NickNameText;
     public Image HealthImage;
 
+    [Header("Audio")]
+    public AudioSource audio;
+
     bool isWalk;
     bool isGround;
     Vector3 curPos;
 
     void Awake()
     {
+        audio = GetComponent<AudioSource>();
+
         //´Ð³×ÀÓ
         NickNameText.text = pv.IsMine ? PhotonNetwork.NickName : pv.Owner.NickName;
         NickNameText.color = pv.IsMine ? Color.green : Color.red;
@@ -59,6 +64,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             anim.SetBool("jump", !isGround);
             if (Input.GetKeyDown(KeyCode.UpArrow) && isGround)
             {
+                audio.Play();
                 pv.RPC("JumpRPC", RpcTarget.All);
             }
 

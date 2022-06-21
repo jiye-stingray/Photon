@@ -10,7 +10,19 @@ public class Bullet : MonoBehaviourPunCallbacks
     public PhotonView pv;
     int dir;
 
-    void Start() => Destroy(gameObject, 3.5f);  //3.5초 후에 총알 삭제
+    AudioSource audio;
+
+    private void Awake()
+    {
+        audio = GetComponent<AudioSource>();
+    }
+
+    void Start()
+    {
+        audio.Play();
+        Destroy(gameObject, 3.5f);  //3.5초 후에 총알 삭제
+
+    }
 
     void Update() => transform.Translate(Vector3.right * 7 * Time.deltaTime * dir);
 
